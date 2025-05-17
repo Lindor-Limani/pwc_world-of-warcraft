@@ -13,7 +13,7 @@ namespace pwc.Application.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Charakter, CharakterDTO>();
+            CreateMap<Charakter, CharakterDto>();
                 //.ForMember(dest => dest.EquippedItems, opt => opt.MapFrom(src => src.CharakterItems.Select(ci => ci.Item)));
 
             /*CreateMap<EquipItemDTO, CharakterItem>()

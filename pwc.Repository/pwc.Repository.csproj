@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\pwc.Domain\pwc.Domain.csproj" />
+    <ProjectReference Include="..\pwc.Infrastructure\pwc.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

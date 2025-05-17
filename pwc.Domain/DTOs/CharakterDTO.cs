@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace pwc.Domain.DTOs
 {
-    public class CharakterDTO
+    public class CharakterDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
