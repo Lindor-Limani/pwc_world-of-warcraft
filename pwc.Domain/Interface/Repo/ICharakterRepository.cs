@@ -1,4 +1,5 @@
 ﻿using pwc.Domain.DTOs;
+using pwc.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,15 @@ namespace pwc.Domain.Interface.Repo
 {
     public interface ICharakterRepository
     {
-        Task<List<CharakterDto>> GetAllCharakter();
-        Task<List<EquipItemDTO>> GetEquipedItemsOfCharakterById(int id);
-        Task<CharakterDto> GetCharakterById(int id);
-        Task<CharakterDto> GetCharakterByName(string name);
-        Task<CharakterDto> CreateCharakter(CharakterDto charakter);
-        Task<CharakterDto> UpdateCharakter(CharakterDto charakter);
-        Task<bool> DeleteCharakter(int id);
+        Task<List<Charakter>> GetAllAsync();
+        Task<Charakter?> GetByIdAsync(int id);
+        Task<Charakter?> GetByNameAsync(string name);
+        Task<Charakter> AddAsync(Charakter charakter);
+        Task<Charakter?> UpdateAsync(Charakter charakter);
+        Task<bool> DeleteAsync(int id);
+        Task<Charakter> EquipItemToCharakter(int id, Item item);
+
+        Task<List<Item>> GetEquippedItemsByCharakterIdAsync(int charakterId);
+        Task<List<CharakterItem>> GetCharakterItemsAsync(int charakterId);
     }
 }

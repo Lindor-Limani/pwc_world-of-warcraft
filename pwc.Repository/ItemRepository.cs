@@ -47,7 +47,7 @@ namespace pwc.Repository
             return await _context.Items.ToListAsync();
         }
 
-        public async Task<IEnumerable<Item>> GetByCategoryAsync(ItemCategory category)
+        public async Task<IEnumerable<Item>> GetByCategoryAsync(ItemCategory category) 
         {
             return await _context.Items
                 .Where(i => i.Category == category)

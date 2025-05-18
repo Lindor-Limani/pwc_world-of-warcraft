@@ -1,5 +1,7 @@
-﻿using pwc.Domain.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using pwc.Domain.DTOs;
 using pwc.Domain.Interface.Repo;
+using pwc.Domain.Model;
 using pwc.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -17,34 +19,59 @@ namespace pwc.Repository
             _context = context;
         }
 
-        public Task<MonsterDto> CreateMonster(MonsterDto monster)
+        public async Task<Monster> AddAsync(Monster monster)
         {
-            throw new NotImplementedException();
+            var entry = await _context.Monsters.AddAsync(monster);
+            await _context.SaveChangesAsync();
+            return entry.Entity;
         }
 
-        public Task<bool> DeleteMonster(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var monster = await _context.Monsters.FindAsync(id);
+            if (monster == null)
+                return false;
+
+            _context.Monsters.Remove(monster);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<List<MonsterDto>> GetAllMonsters()
+        public async Task<List<Monster>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Monsters
+                .Include(m => m.Drops)
+                .Include(m => m.MonsterItemDrops)
+                .ToListAsync();
         }
 
-        public Task<MonsterDto> GetMonsterById(int id)
+        public async Task<Monster?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Monsters
+                .Include(m => m.Drops)
+                .Include(m => m.MonsterItemDrops)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public Task<MonsterDto> GetMonsterByName(int id)
+        public async Task<Monster?> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Monsters
+                .Include(m => m.Drops)
+                .Include(m => m.MonsterItemDrops)
+                .FirstOrDefaultAsync(m => m.Name == name);
         }
 
-        public Task<MonsterDto> UpdateMonster(MonsterDto monster)
+        public async Task<Monster?> UpdateAsync(Monster monster)
         {
-            throw new NotImplementedException();
+            var existing = await _context.Monsters.FindAsync(monster.Id);
+            if (existing == null)
+                return null;
+
+            existing.Name = monster.Name;
+            existing.Health = monster.Health;
+            existing.Damage = monster.Damage;
+            await _context.SaveChangesAsync();
+            return existing;
         }
     }
 }
