@@ -18,7 +18,7 @@ namespace pwc.Repository
     {
         private readonly AppDbContext _context;
 
-        public ItemRepository(AppDbContext context, IMapper mapper)
+        public ItemRepository(AppDbContext context)
         {
             _context = context;
         }
@@ -44,30 +44,48 @@ namespace pwc.Repository
 
         public async Task<IEnumerable<Item>> GetAllAsync()
         {
-            return await _context.Items.ToListAsync();
+            return await _context.Items
+                .Include(i => i.DroppedBy)
+                .Include(i => i.CharakterItems)
+                .Include(i => i.MonsterItemDrops)
+                .ToListAsync();
         }
 
-        public async Task<IEnumerable<Item>> GetByCategoryAsync(ItemCategory category) 
+        public async Task<IEnumerable<Item>> GetByCategoryAsync(ItemCategory category)
         {
             return await _context.Items
+                .Include(i => i.DroppedBy)
+                .Include(i => i.CharakterItems)
+                .Include(i => i.MonsterItemDrops)
                 .Where(i => i.Category == category)
                 .ToListAsync();
         }
         public async Task<IEnumerable<Item>> GetByCharacterIdAsync(int characterId)
         {
             return await _context.Items
+                .Include(i => i.DroppedBy)
+                .Include(i => i.CharakterItems)
+                .Include(i => i.MonsterItemDrops)
                 .Where(item => item.CharakterItems.Any(ci => ci.CharakterId == characterId))
                 .ToListAsync();
         }
 
         public async Task<Item?> GetByIdAsync(int id)
         {
-            return await _context.Items.FindAsync(id);
+            return await _context.Items
+                .Include(i => i.DroppedBy)
+                .Include(i => i.CharakterItems)
+                .Include(i => i.MonsterItemDrops)
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<Item?> GetByNameAsync(string name)
         {
-            return await _context.Items.FirstOrDefaultAsync(i => i.Name == name);
+            return await _context.Items
+                .Include(i => i.DroppedBy)
+                .Include(i => i.CharakterItems)
+                .Include(i => i.MonsterItemDrops)
+                .FirstOrDefaultAsync(i => i.Name == name);
         }
 
         public async Task<Item?> UpdateAsync(Item item)
