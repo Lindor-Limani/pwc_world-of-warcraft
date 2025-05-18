@@ -1,4 +1,5 @@
 ﻿using pwc.Domain.DTOs;
+using pwc.Domain.Model;
 using pwc.Domain.Model.Enum;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,13 @@ namespace pwc.Domain.Interface.Repo
 {
     public interface IItemRepository
     {
-        Task<ItemDto?> GetItemByIdAsync(int id);
-        Task<ItemDto?> GetItemByNameAsync(int id);
-        Task<IEnumerable<ItemDto>> GetAllItemsAsync();
-        Task<ItemDto?> AddItemAsync(ItemDto item);
-        Task<ItemDto?> UpdateItemAsync(ItemDto item);
-        Task<bool> DeleteItemAsync(int id);
-        Task<IEnumerable<ItemDto>> GetItemsByCategoryAsync(ItemCategory category);
-        Task<IEnumerable<ItemDto>> GetItemsByCharacterIdAsync(int characterId);
+        Task<Item?> GetByIdAsync(int id);
+        Task<Item?> GetByNameAsync(string name);
+        Task<IEnumerable<Item>> GetAllAsync();
+        Task<Item?> AddAsync(Item item);
+        Task<Item?> UpdateAsync(Item item);
+        Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<Item>> GetByCategoryAsync(ItemCategory category);
+        Task<IEnumerable<Item>> GetByCharacterIdAsync(int characterId);
     }
 }

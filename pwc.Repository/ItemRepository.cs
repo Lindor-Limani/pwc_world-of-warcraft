@@ -1,5 +1,9 @@
-﻿using pwc.Domain.DTOs;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using pwc.Domain.DTOs;
 using pwc.Domain.Interface.Repo;
+using pwc.Domain.Model;
 using pwc.Domain.Model.Enum;
 using pwc.Infrastructure;
 using System;
@@ -14,49 +18,76 @@ namespace pwc.Repository
     {
         private readonly AppDbContext _context;
 
-        public ItemRepository(AppDbContext context)
+        public ItemRepository(AppDbContext context, IMapper mapper)
         {
             _context = context;
         }
 
-        public Task<ItemDto?> AddItemAsync(ItemDto item)
+        public async Task<Item?> AddAsync(Item item)
         {
-            throw new NotImplementedException();
+            var entityEntry = await _context.Items.AddAsync(item);
+            await _context.SaveChangesAsync();
+            return entityEntry.Entity;
         }
 
-        public Task<bool> DeleteItemAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var item = await _context.Items.FindAsync(id);
+            if (item == null)
+            {
+                return false;
+            }
+            _context.Items.Remove(item);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<IEnumerable<ItemDto>> GetAllItemsAsync()
+        public async Task<IEnumerable<Item>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Items.ToListAsync();
         }
 
-        public Task<ItemDto?> GetItemByIdAsync(int id)
+        public async Task<IEnumerable<Item>> GetByCategoryAsync(ItemCategory category)
         {
-            throw new NotImplementedException();
+            return await _context.Items
+                .Where(i => i.Category == category)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Item>> GetByCharacterIdAsync(int characterId)
+        {
+            return await _context.Items
+                .Where(item => item.CharakterItems.Any(ci => ci.CharakterId == characterId))
+                .ToListAsync();
         }
 
-        public Task<ItemDto?> GetItemByNameAsync(int id)
+        public async Task<Item?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Items.FindAsync(id);
         }
 
-        public Task<IEnumerable<ItemDto>> GetItemsByCategoryAsync(ItemCategory category)
+        public async Task<Item?> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Items.FirstOrDefaultAsync(i => i.Name == name);
         }
 
-        public Task<IEnumerable<ItemDto>> GetItemsByCharacterIdAsync(int characterId)
+        public async Task<Item?> UpdateAsync(Item item)
         {
-            throw new NotImplementedException();
-        }
+            var itemToUpdate = await _context.Items.FindAsync(item.Id);
+            if (itemToUpdate == null)
+            {
+                return null;
+            }
 
-        public Task<ItemDto?> UpdateItemAsync(ItemDto item)
-        {
-            throw new NotImplementedException();
+            // Update scalar properties
+            itemToUpdate.Name = item.Name;
+            itemToUpdate.Geschicklichkeit = item.Geschicklichkeit;
+            itemToUpdate.Staerke = item.Staerke;
+            itemToUpdate.Ausdauer = item.Ausdauer;
+            itemToUpdate.Category = item.Category;
+
+            // Save changes
+            await _context.SaveChangesAsync();
+            return itemToUpdate;
         }
     }
 }
