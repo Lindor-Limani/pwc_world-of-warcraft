@@ -12,5 +12,6 @@ namespace pwc.Domain.DTOs
         public string Name { get; set; }
         public int Health { get; set; } // zusaetzlich, war nicht teil der Aufgabe
         public int Damage { get; set; } // zusaetzlich, war nicht teil der Aufgabe 
+        public ICollection<ItemDto> Drops { get; set; } = new List<ItemDto>();
     }
 }

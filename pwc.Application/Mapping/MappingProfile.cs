@@ -23,11 +23,14 @@ namespace pwc.Application.Mapping
                 .ForMember(dest => dest.CharakterId, opt => opt.MapFrom(src => src.CharakterId))
                 .ForMember(dest => dest.ItemId, opt => opt.MapFrom(src => src.ItemId));
             CreateMap<CreateMonsterCommand, Monster>();
+            CreateMap<Monster, MonsterDto>()
+    .ForMember(dest => dest.Drops, opt => opt.MapFrom(src => src.MonsterItemDrops.Select(mid => mid.Item)));
+
 
             CreateMap<Charakter, CharakterDto>()
     .ForMember(dest => dest.EquippedItems, opt => opt.MapFrom(src => src.CharakterItems.Select(ci => ci.Item)));
 
-            CreateMap<Monster, MonsterDto>();
+           // CreateMap<Monster, MonsterDto>();
         }
     }
 }

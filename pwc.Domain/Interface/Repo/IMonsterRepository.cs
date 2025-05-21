@@ -10,11 +10,13 @@ namespace pwc.Domain.Interface.Repo
 {
     public interface IMonsterRepository
     {
-        Task<List<Monster>> GetAllAsync();
+        Task<IEnumerable<Monster>> GetAllAsync();
         Task<Monster?> GetByIdAsync(int id);
-        Task<Monster?> GetByNameAsync(string name);
+        Task<IEnumerable<Monster>> GetByNameAsync(string name);
         Task<Monster> AddAsync(Monster monster);
         Task<Monster?> UpdateAsync(Monster monster);
         Task<bool> DeleteAsync(int id);
+        Task<Monster> AddItemDropAsync(int monsterId, int itemId, double dropChance);
+
     }
 }
