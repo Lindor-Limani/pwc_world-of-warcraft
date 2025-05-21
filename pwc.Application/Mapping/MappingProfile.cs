@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using pwc.Application.CQRS.Commands.Charakter;
 using pwc.Application.CQRS.Commands.Items;
 using pwc.Domain.DTOs;
 using pwc.Domain.Model;
@@ -23,7 +24,7 @@ namespace pwc.Application.Mapping
 
             CreateMap<Item, ItemDto>();
             CreateMap<CreateItemCommand, Item>();
-
+            CreateMap<CreateCharakterCommand, Charakter>();
 
             CreateMap<Monster, MonsterDto>();
         }

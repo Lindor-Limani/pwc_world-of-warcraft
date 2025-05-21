@@ -23,6 +23,8 @@ builder.Services.AddMediatR(cfg =>
 
 // Transients 
 builder.Services.AddTransient<IItemRepository, ItemRepository>();
+builder.Services.AddTransient<ICharakterRepository, CharakterRepository>();
+builder.Services.AddTransient<IMonsterRepository, MonsterRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile)); 
 builder.Services.AddEndpointsApiExplorer();

@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Commands\Charakter\" />
     <Folder Include="CQRS\Commands\Monster\" />
     <Folder Include="CQRS\Queries\Charakter\" />
     <Folder Include="CQRS\Queries\Monster\" />

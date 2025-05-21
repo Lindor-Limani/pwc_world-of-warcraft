@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
 using MediatR;
+using pwc.Domain.DTOs;
 using pwc.Domain.Interface.Repo;
 using pwc.Domain.Model.Enum;
-using pwc.Domain.Model;
-using pwc.Domain.DTOs;
 using System.ComponentModel.DataAnnotations;
+using ZstdSharp.Unsafe;
 
 namespace pwc.Application.CQRS.Commands.Items
 {
-    public record class CreateItemCommand(
+
+    public record class UpdateItemCommand(
+        int Id, 
         string Name,
         int Geschicklichkeit,
         int Staerke,
@@ -29,34 +31,38 @@ namespace pwc.Application.CQRS.Commands.Items
 
         }
     }
-
-    public class CreateItemHandler : IRequestHandler<CreateItemCommand, ItemDto>
+    public class UpdateItemHandler : IRequestHandler<UpdateItemCommand, ItemDto>
     {
         private readonly IItemRepository _itemRepository;
         private readonly IMapper _mapper;
 
-        public CreateItemHandler(
-            IItemRepository itemRepository,
-            IMapper mapper)
+        public UpdateItemHandler(IItemRepository itemRepository, IMapper mapper)
         {
             _itemRepository = itemRepository;
             _mapper = mapper;
         }
 
-        public async Task<ItemDto> Handle(
-            CreateItemCommand request,
-            CancellationToken cancellationToken)
+        public async Task<ItemDto> Handle(UpdateItemCommand request, CancellationToken cancellationToken)
         {
-            try
+            var existingItem = await _itemRepository.GetByIdAsync(request.Id);
+            if (existingItem == null)
             {
-                var item = _mapper.Map<Item>(request);
-                await _itemRepository.AddAsync(item);
-                return _mapper.Map<ItemDto>(item);
+                return null!;
             }
-            catch (Exception ex)
+
+            existingItem.Name = request.Name;
+            existingItem.Geschicklichkeit = request.Geschicklichkeit;
+            existingItem.Staerke = request.Staerke;
+            existingItem.Ausdauer = request.Ausdauer;
+            existingItem.Category = request.Category;
+
+            var updatedItem = await _itemRepository.UpdateAsync(existingItem);
+            if (updatedItem == null)
             {
-                throw new ApplicationException("Error creating item", ex);
+                return null!;
             }
+
+            return _mapper.Map<ItemDto>(updatedItem);
         }
     }
 }

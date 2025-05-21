@@ -58,6 +58,7 @@ namespace pwc.Repository
                 .Include(i => i.CharakterItems)
                 .Include(i => i.MonsterItemDrops)
                 .Where(i => i.Category == category)
+                .OrderBy(i => i.Name)
                 .ToListAsync();
         }
         public async Task<IEnumerable<Item>> GetByCharacterIdAsync(int characterId)
@@ -79,13 +80,14 @@ namespace pwc.Repository
                 .FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public async Task<Item?> GetByNameAsync(string name)
+        public async Task<IEnumerable<Item>> GetByNameAsync(string name)
         {
             return await _context.Items
                 .Include(i => i.DroppedBy)
                 .Include(i => i.CharakterItems)
                 .Include(i => i.MonsterItemDrops)
-                .FirstOrDefaultAsync(i => i.Name == name);
+                .Where(i => i.Name == name)
+                .ToListAsync();
         }
 
         public async Task<Item?> UpdateAsync(Item item)

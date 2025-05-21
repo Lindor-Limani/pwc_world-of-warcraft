@@ -12,7 +12,7 @@ namespace pwc.Domain.Interface.Repo
     public interface IItemRepository
     {
         Task<Item?> GetByIdAsync(int id);
-        Task<Item?> GetByNameAsync(string name);
+        Task<IEnumerable<Item>> GetByNameAsync(string name);
         Task<IEnumerable<Item>> GetAllAsync();
         Task<Item?> AddAsync(Item item);
         Task<Item?> UpdateAsync(Item item);
