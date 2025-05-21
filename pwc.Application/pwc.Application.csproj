@@ -8,10 +8,19 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="MySql.Data" Version="9.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\pwc.Domain\pwc.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CQRS\Commands\Charakter\" />
+    <Folder Include="CQRS\Commands\Monster\" />
+    <Folder Include="CQRS\Queries\Charakter\" />
+    <Folder Include="CQRS\Queries\Monster\" />
   </ItemGroup>
 
 </Project>

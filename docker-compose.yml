@@ -1,0 +1,25 @@
+services:
+  pwc.api:
+    image: ${DOCKER_REGISTRY-}pwcapi
+    container_name: pwcapi
+    build:
+      context: .
+      dockerfile: pwc.API/Dockerfile
+    ports: 
+      - "8080:8080"
+      - "8081:8081"
+
+  pwc.database:
+    image: postgres:latest
+    container_name: pwcdb
+    environment:
+      POSTGRES_USER: pwc
+      POSTGRES_PASSWORD: pwc
+      POSTGRES_DB: pwcdb
+    volumes:
+      - pwcdb_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pwcdb_data:
