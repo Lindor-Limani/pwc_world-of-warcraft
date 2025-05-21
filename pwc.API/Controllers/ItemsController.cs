@@ -61,7 +61,28 @@ namespace pwc.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the item {ex}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the item");
+            }
+        }
+
+        [HttpGet()]
+        [ProducesResponseType(typeof(ItemDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAllItems()
+        {
+            try
+            {
+                var query = new GetAllItemsQuery();
+                var items = await _mediator.Send(query);
+                return Ok(items);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the items");
             }
         }
     } 
