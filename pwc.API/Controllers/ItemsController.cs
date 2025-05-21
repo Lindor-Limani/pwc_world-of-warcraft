@@ -107,7 +107,7 @@ namespace pwc.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ItemDto), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ItemDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetItemById(int id)
         {

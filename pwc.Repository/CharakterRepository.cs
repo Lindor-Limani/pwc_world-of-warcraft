@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using pwc.Domain.DTOs;
+using pwc.Domain.Exceptions;
 using pwc.Domain.Interface.Repo;
 using pwc.Domain.Model;
 using pwc.Infrastructure;
@@ -37,32 +38,35 @@ namespace pwc.Repository
             return true;
         }
 
-        public async Task<Charakter> EquipItemToCharakter(int charakterId, Item item)
+        public async Task<Charakter> EquipItemToCharakter(int charakterId, int itemId)
         {
             var charakter = await _context.Characters
                 .Include(c => c.CharakterItems)
+                .ThenInclude(ci => ci.Item)
                 .FirstOrDefaultAsync(c => c.Id == charakterId);
+
 
             if (charakter == null)
                 throw new KeyNotFoundException($"Charakter with ID {charakterId} not found.");
 
-            var itemEntity = await _context.Items.FindAsync(item.Id);
+            var itemEntity = await _context.Items.FindAsync(itemId);
             if (itemEntity == null)
-                throw new KeyNotFoundException($"Item with ID {item.Id} not found.");
+                throw new KeyNotFoundException($"Item with ID {itemId} not found.");
 
-            bool alreadyEquipped = charakter.CharakterItems.Any(ci => ci.ItemId == item.Id);
-            bool categoryAlreadyEquipped = charakter.CharakterItems.Any(ci => ci.Item.Category == item.Category);
+            bool alreadyEquipped = charakter.CharakterItems.Any(ci => ci.ItemId == itemId);
+            bool categoryAlreadyEquipped = charakter.CharakterItems.Any(ci => ci.Item != null && ci.Item.Category == itemEntity.Category);
+
 
             if (alreadyEquipped)
-                throw new Exception($"Item with ID {item.Id} is already equipped.");
+                throw new SameEquippmentTwiceException($"Item with ID {itemId} is already equipped.");
 
             if (categoryAlreadyEquipped)
-                throw new Exception($"An item of category {item.Category} is already equipped.");
+                throw new CategoryAlreadyEquippedException($"An item of category {itemEntity.Category} is already equipped.");
 
             var charakterItem = new CharakterItem
             {
                 CharakterId = charakterId,
-                ItemId = item.Id
+                ItemId = itemId
             };
             charakter.CharakterItems.Add(charakterItem);
             await _context.SaveChangesAsync();
@@ -70,7 +74,7 @@ namespace pwc.Repository
             return charakter;
         }
 
-        public async Task<List<Charakter>> GetAllAsync()
+        public async Task<IEnumerable<Charakter>> GetAllAsync()
         {
             return await _context.Characters
                 .Include(c => c.CharakterItems)
@@ -86,12 +90,13 @@ namespace pwc.Repository
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<Charakter?> GetByNameAsync(string name)
+        public async Task<IEnumerable<Charakter>> GetByNameAsync(string name)
         {
             return await _context.Characters
                 .Include(c => c.CharakterItems)
                 .ThenInclude(ci => ci.Item)
-                .FirstOrDefaultAsync(c => c.Name == name);
+                .Where(c => c.Name == name)
+                .ToListAsync();
         }
 
         public async Task<List<CharakterItem>> GetCharakterItemsAsync(int charakterId)

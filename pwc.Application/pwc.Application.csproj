@@ -16,10 +16,4 @@
     <ProjectReference Include="..\pwc.Domain\pwc.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\Commands\Monster\" />
-    <Folder Include="CQRS\Queries\Charakter\" />
-    <Folder Include="CQRS\Queries\Monster\" />
-  </ItemGroup>
-
 </Project>
