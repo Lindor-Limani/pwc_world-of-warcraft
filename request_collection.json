@@ -1,0 +1,236 @@
+{
+  "info": {
+    "name": "PWC API Collection",
+    "_postman_id": "pwc-api-collection-001",
+    "description": "Request Collection für Monster, Charaktere und Items",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Monsters",
+      "item": [
+        {
+          "name": "Get All Monsters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/monsters", "host": ["{{baseUrl}}"], "path": ["api", "monsters"] }
+          }
+        },
+        {
+          "name": "Get Monster By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/monsters/1", "host": ["{{baseUrl}}"], "path": ["api", "monsters", "1"] }
+          }
+        },
+        {
+          "name": "Get Monster By Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/monsters/MonsterName/Goblin", "host": ["{{baseUrl}}"], "path": ["api", "monsters", "MonsterName", "Goblin"] }
+          }
+        },
+        {
+          "name": "Create Monster",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Goblin\",\n  \"health\": 10,\n  \"damage\": 2\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/monsters", "host": ["{{baseUrl}}"], "path": ["api", "monsters"] }
+          }
+        },
+        {
+          "name": "Update Monster",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Goblin King\",\n  \"health\": 20,\n  \"damage\": 5,\n  \"dropItemIds\": [2,3]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/monsters/1", "host": ["{{baseUrl}}"], "path": ["api", "monsters", "1"] }
+          }
+        },
+        {
+          "name": "Delete Monster",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/monsters/1", "host": ["{{baseUrl}}"], "path": ["api", "monsters", "1"] }
+          }
+        },
+        {
+          "name": "Add Drop to Monster",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"monsterId\": 1,\n  \"itemId\": 2,\n  \"dropChance\": 0.5\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/monsters/1/drops", "host": ["{{baseUrl}}"], "path": ["api", "monsters", "1", "drops"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Charakters",
+      "item": [
+        {
+          "name": "Get All Charakters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/charakters", "host": ["{{baseUrl}}"], "path": ["api", "charakters"] }
+          }
+        },
+        {
+          "name": "Get Charakter By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/charakters/1", "host": ["{{baseUrl}}"], "path": ["api", "charakters", "1"] }
+          }
+        },
+        {
+          "name": "Get Charakter By Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/charakters/CharakterName/Hero", "host": ["{{baseUrl}}"], "path": ["api", "charakters", "CharakterName", "Hero"] }
+          }
+        },
+        {
+          "name": "Create Charakter",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hero\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/charakters", "host": ["{{baseUrl}}"], "path": ["api", "charakters"] }
+          }
+        },
+        {
+          "name": "Update Charakter",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Hero Mage\",\n  \"equippedItemIds\": [2,3]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/charakters/1", "host": ["{{baseUrl}}"], "path": ["api", "charakters", "1"] }
+          }
+        },
+        {
+          "name": "Delete Charakter",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/charakters/1", "host": ["{{baseUrl}}"], "path": ["api", "charakters", "1"] }
+          }
+        },
+        {
+          "name": "Equip Item to Charakter",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"charakterId\": 1,\n  \"itemId\": 2\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/charakters/1/equip", "host": ["{{baseUrl}}"], "path": ["api", "charakters", "1", "equip"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Items",
+      "item": [
+        {
+          "name": "Get All Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/items", "host": ["{{baseUrl}}"], "path": ["api", "items"] }
+          }
+        },
+        {
+          "name": "Get Item By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/items/1", "host": ["{{baseUrl}}"], "path": ["api", "items", "1"] }
+          }
+        },
+        {
+          "name": "Get Items By Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/items/ItemName/Sword", "host": ["{{baseUrl}}"], "path": ["api", "items", "ItemName", "Sword"] }
+          }
+        },
+        {
+          "name": "Get Items By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/items/category/Waffe", "host": ["{{baseUrl}}"], "path": ["api", "items", "category", "Waffe"] }
+          }
+        },
+        {
+          "name": "Get Items By CharakterId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/items/charakter/1", "host": ["{{baseUrl}}"], "path": ["api", "items", "charakter", "1"] }
+          }
+        },
+        {
+          "name": "Create Item",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sword\",\n  \"geschicklichkeit\": 1,\n  \"staerke\": 2,\n  \"ausdauer\": 3,\n  \"category\": \"Waffe\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/items", "host": ["{{baseUrl}}"], "path": ["api", "items"] }
+          }
+        },
+        {
+          "name": "Update Item",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Sword+1\",\n  \"geschicklichkeit\": 2,\n  \"staerke\": 3,\n  \"ausdauer\": 4,\n  \"category\": \"Waffe\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/items/1", "host": ["{{baseUrl}}"], "path": ["api", "items", "1"] }
+          }
+        },
+        {
+          "name": "Delete Item",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/items/1", "host": ["{{baseUrl}}"], "path": ["api", "items", "1"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" }
+  ]
+}
