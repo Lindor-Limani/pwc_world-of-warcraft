@@ -19,6 +19,7 @@ namespace pwc.Extensions
             using AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
             dbContext.Database.Migrate();
+            dbContext.SeedRPGGenre();
         }
     }
 }
