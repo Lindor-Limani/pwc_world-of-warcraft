@@ -20,6 +20,13 @@ namespace pwc.API.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Creates a new monster.
+        /// </summary>
+        /// <param name="command">The monster creation data.</param>
+        /// <returns>The created monster.</returns>
+        /// <response code="201">Returns the newly created monster.</response>
+        /// <response code="400">If the request is invalid.</response>
         [HttpPost]
         [ProducesResponseType(typeof(MonsterDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -44,6 +51,13 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Assigns drops or loot to monsters.
+        /// </summary>
+        /// <param name="command">The monster assignment data.</param>
+        /// <returns>The assigned monster to loop relation.</returns>
+        /// <response code="201">Returns the relation between drops(items) and monsters.</response>
+        /// <response code="400">If the request is invalid.</response>
         [HttpPost("{monsterId}/drops")]
         [ProducesResponseType(typeof(MonsterDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -76,6 +90,15 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an existing monster.
+        /// </summary>
+        /// <param name="id">The monsters's ID.</param>
+        /// <param name="command">The updated monster data.</param>
+        /// <returns>The updated monster.</returns>
+        /// <response code="200">Returns the updated monster.</response>
+        /// <response code="400">If the request is invalid or IDs do not match.</response>
+        /// <response code="404">If the monster is not found.</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(MonsterDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -107,6 +130,12 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes an monster by ID.
+        /// </summary>
+        /// <param name="id">The monster's ID.</param>
+        /// <response code="204">If the monster was deleted.</response>
+        /// <response code="404">If the monster is not found.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -132,6 +161,13 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets an monster by its unique ID.
+        /// </summary>
+        /// <param name="id">The monster's ID.</param>
+        /// <returns>The monster DTO.</returns>
+        /// <response code="200">Returns the monster.</response>
+        /// <response code="404">If the monster is not found.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(MonsterDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -153,8 +189,14 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all monsters.
+        /// </summary>
+        /// <returns>A list of all monster.</returns>
+        /// <response code="200">Returns the list of monsters.</response>
+        /// <response code="404">If no monsters are found.</response>
         [HttpGet("")]
-        [ProducesResponseType(typeof(MonsterDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<MonsterDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllMonster()
         {
@@ -174,8 +216,15 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all monsters by name (partial or full match).
+        /// </summary>
+        /// <param name="name">The monster name to search for.</param>
+        /// <returns>A list of matching monsters.</returns>
+        /// <response code="200">Returns the list of monsters.</response>
+        /// <response code="404">If no monsters are found.</response>
         [HttpGet("MonsterName/{name}")]
-        [ProducesResponseType(typeof(MonsterDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<MonsterDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetMonsterByName(string name)
         {

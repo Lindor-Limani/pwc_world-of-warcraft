@@ -20,6 +20,13 @@ namespace pwc.API.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Creates a new character.
+        /// </summary>
+        /// <param name="command">The character creation data.</param>
+        /// <returns>The created character.</returns>
+        /// <response code="201">Returns the newly created character.</response>
+        /// <response code="400">If the request is invalid.</response>
         [HttpPost]
         [ProducesResponseType(typeof(CharakterDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -44,7 +51,14 @@ namespace pwc.API.Controllers
             }
         }
 
-        
+        /// <summary>
+        /// Equips an item to a character.
+        /// </summary>
+        /// <param name="charakterID">The character's ID.</param>
+        /// <param name="itemID">The item's ID to equip.</param>
+        /// <returns>The updated character with the equipped item.</returns>
+        /// <response code="200">Returns the updated character.</response>
+        /// <response code="404">If the character or item is not found.</response>
         [HttpPost("equip/{charakterID}/{itemID}")]
         [ProducesResponseType(typeof(CharakterDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -67,6 +81,15 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an existing character.
+        /// </summary>
+        /// <param name="id">The character's ID.</param>
+        /// <param name="command">The updated character data.</param>
+        /// <returns>The updated character.</returns>
+        /// <response code="200">Returns the updated character.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="404">If the character is not found.</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(CharakterDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -99,6 +122,12 @@ namespace pwc.API.Controllers
         }
 
 
+        /// <summary>
+        /// Deletes a character by ID.
+        /// </summary>
+        /// <param name="id">The character's ID.</param>
+        /// <response code="204">If the character was deleted.</response>
+        /// <response code="404">If the character is not found.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -124,6 +153,13 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a character by its unique ID.
+        /// </summary>
+        /// <param name="id">The character's ID.</param>
+        /// <returns>The character DTO.</returns>
+        /// <response code="200">Returns the character.</response>
+        /// <response code="404">If the character is not found.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(CharakterDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -145,8 +181,15 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all characters with the specified name.
+        /// </summary>
+        /// <param name="name">The character's name.</param>
+        /// <returns>A list of matching characters.</returns>
+        /// <response code="200">Returns the list of characters.</response>
+        /// <response code="404">If no characters are found.</response>
         [HttpGet("charakterName/{name}")]
-        [ProducesResponseType(typeof(CharakterDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<CharakterDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCharakterByName(string name)
         {
@@ -166,8 +209,15 @@ namespace pwc.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all characters.
+        /// </summary>
+        /// <returns>A list of all characters.</returns>
+        /// <response code="200">Returns the list of characters.</response>
+        /// <response code="404">If no characters are found.</response>
+
         [HttpGet("")]
-        [ProducesResponseType(typeof(CharakterDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<CharakterDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllCharakters()
         {
